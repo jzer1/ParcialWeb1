@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colombina</title>
+    <link rel="stylesheet" href="Styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="header">
+        <img src="imagenes/logo-nav.png" alt="logo de Colombina">
+        <nav class="navegacion">
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#quienes-somos">¿Quiénes somos?</a></li>
+                <li class="dropdown">
+                    <a href="#">Categorías</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#chocolateria">Chocolatería</a></li>
+                        <li><a href="#dulces">Dulces</a></li>
+                        <li><a href="#galletas">Galletas</a></li>
+                        <li><a href="#helados">Helados</a></li>
+                        <li><a href="#snacks">Snacks</a></li>
+                    </ul>
+                </li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><button id="cart-btn">🛒</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Carrito de Compra (Ventana Flotante) -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Carrito de Compras</h2>
+            <div id="cart-items"></div>
+            <p>Subtotal: <span id="subtotal">$0</span></p>
+            <p>IVA: <span id="iva">$0</span></p>
+            <p>Total: <span id="total">$0</span></p>
+            <label for="payment-method">Método de Pago:</label>
+            <select id="payment-method">
+                <option value="efectivo">Efectivo</option>
+                <option value="pse">PSE</option>
+                <option value="efecty">Código de referencia (Efecty)</option>
+            </select>
+            <button id="buy-btn">Comprar</button>
+        </div>
+    </div>
+
+    <div class="carusel">
+
+        <div class="slide">
+            <video autoplay muted loop>
+                <source src="videos/Hasta la Última Cucharada - Helados Colombina.mp4" type="video/mp4">
+            </video>
+        </div>
+        
+        <div class="slide">
+            <video autoplay muted loop>
+                <source src="videos/Galletas Sandwich Yogurt griego y Açaí Colombina.mp4" type="video/mp4">
+            </video>
+        </div>
+        
+
+        <div class="slide"> <img src="imagenes/Colombina-Banner.jpg" alt="Colombina-Banner"> </div>
+
+        <div class="slide"> <img src="imagenes/Helados.jpg" alt="Helados"> </div>
+
+        <div class="slide"> <img src="imagenes/Colombina-dulces.jpg" alt="Colombina-dulces"> </div>
+
+        <div class="slide"> <img src="imagenes/helados2.jpg" alt="helados2"> </div>
+
+        <div class="slide"> <img src="imagenes/Gomitas.jpg" alt="Gomitas"> </div>
+    
+        <button class="flecha flecha-izq">&#10094;</button>
+        <button class="flecha flecha-der">&#10095;</button>
+        <div class="indicadores"></div>
+        
+    </div>
+
+
+
+    <script>
+        let slides = document.querySelectorAll(".slide");
+        let currentIndex = 0;//indice del slider/
+        let intervalo = setInterval(showNextSlide, 5000); // Cambia cada 5 segundos
+
+        //funcion para mostrar la siguiente imagen/
+        function showNextSlide() {
+            slides.forEach((slide, index) => {
+                if (index === currentIndex) {
+                    slide.style.opacity = 1; // Mostrar el slide actual
+                } else {
+                    slide.style.opacity = 0; // Ocultar los demás slides
+                }
+            });
+
+            //incrementa el indice del slider/
+            currentIndex = (currentIndex + 1) % slides.length;
+        }
+
+        //funcion para mostrar la imagen anterior/
+        function showPreviousSlide() {
+            slides.forEach((slide, index) => {
+                if (index === currentIndex) {
+                    slide.style.opacity = 1; // Mostrar el slide actual
+                } else {
+                    slide.style.opacity = 0; // Ocultar los demás slides
+                }
+            });
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        }
+
+        document.querySelector(".flecha-izq").addEventListener("click", function() {
+            clearInterval(intervalo);
+            showPreviousSlide();
+            intervalo = setInterval(showNextSlide, 5000);
+        });
+
+        document.querySelector(".flecha-der").addEventListener("click", function() {
+            clearInterval(intervalo);
+            showNextSlide();
+            intervalo = setInterval(showNextSlide, 5000);
+        });
+        let indicadoresContainer = document.querySelector(".indicadores");
+
+// Crear indicadores dinámicamente según la cantidad de slides
+slides.forEach((_, index) => {
+    let indicador = document.createElement("div");
+    indicador.classList.add("indicador");
+    if (index === 0) indicador.classList.add("activo"); // El primero es el activo
+    indicadoresContainer.appendChild(indicador);
+});
+
+let indicadores = document.querySelectorAll(".indicador");
+
+// Función para actualizar el indicador activo
+function actualizarIndicadores() {
+    indicadores.forEach((indicador, index) => {
+        if (index === currentIndex) {
+            indicador.classList.add("activo");
+        } else {
+            indicador.classList.remove("activo");
+        }
+    });
+}
+
+// Modifica showNextSlide y showPreviousSlide para actualizar indicadores
+function showNextSlide() {
+    slides.forEach((slide, index) => {
+        slide.style.opacity = index === currentIndex ? 1 : 0;
+    });
+
+    currentIndex = (currentIndex + 1) % slides.length;
+    actualizarIndicadores();
+}
+
+function showPreviousSlide() {
+    slides.forEach((slide, index) => {
+        slide.style.opacity = index === currentIndex ? 1 : 0;
+    });
+
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    actualizarIndicadores();
+}
+    </script>
+
+
+    <!-- Sección de Información -->
+    <section class="info-section">
+        <div class="info-column">
+            <h2>¿Quiénes somos?</h2>
+            <p>
+                Colombina es una compañía global de alimentos con más de 95 años de experiencia, 
+                dedicada a cautivar a los consumidores a través de la innovación y el sabor de sus productos. 
+                Opera bajo un modelo de gestión integral y transparente, fabricando y comercializando alimentos en 19 categorías diferentes, 
+                gracias a un equipo de colaboradores que crea las mejores experiencias.
+            </p>
+        </div>
+        <div class="info-column">
+            <h2>Plantas de producción</h2>
+            <ul>
+                <li><h3>Planta de Confitería en La Paila, Zarzal, Valle del Cauca.</h3> 
+                        Inaugurada en 1927, aquí se elaboran dulces, masmelos, gomas, chicles, chocolates y pasabocas. </li>
+                <li><h3>Planta de Galletas y Snacks en Santander de Quilichao, Cauca.</h3>
+                        Operativa desde noviembre de 2000, produce galletas wafer, galletas dulces, barquillos y pasteles.</li>
+                <li><h3>Planta de Conservas en Tuluá, Valle del Cauca.</h3>
+                        Especializada en la producción de salsas y conservas bajo la marca La Constancia</li>
+            </ul>
+        </div>
+        <div class="info-column">
+            <h2>Noticias</h2>
+            <div class="news-box">Noticia 1</div>
+            <div class="news-box">Noticia 2</div>
+            <div class="news-box">Noticia 3</div>
+        </div>
+    </section>
+
+    <!-- Productos -->
+    <section id="productos">
+        <h2>Productos</h2>
+        <input type="text" placeholder="Ingresa el nombre del producto" id="search-bar">
+        <button>🔍</button>
+        <div class="product-categories">
+            <button data-category="chocolateria">Chocolatería</button>
+            <button data-category="dulces">Dulces</button>
+            <button data-category="galletas">Galletas</button>
+            <button data-category="helados">Helados</button>
+            <button data-category="snacks">Snacks</button>
+        </div>
+        <div id="product-list"></div>
+    </section>
+
+    <!-- Formulario de Contacto -->
+    <section id="contacto">
+        <h2>Solicitud de Contacto</h2>
+        <form>
+            <label>Departamento a contactar</label>
+            <select>
+                <option>Asesoría</option>
+                <option>Información</option>
+                <option>Trabaja con nosotros</option>
+                <option>Queja</option>
+            </select>
+            <input type="text" placeholder="Nombre Completo">
+            <input type="text" placeholder="Teléfono">
+            <input type="email" placeholder="Correo electrónico">
+            <input type="text" placeholder="Ciudad/Departamento">
+            <textarea placeholder="Escribe tu comentario aquí"></textarea>
+            <div class="captcha">[Código de seguridad]</div>
+            <input type="text" placeholder="Código de seguridad">
+            <button type="submit">Enviar</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-section">
+            <img src="logo.png" alt="Logo">
+            <p>Colombina</p>
+        </div>
+        <div class="footer-section">
+            <h3>Contacto</h3>
+            <p>Correo: info@colombina.com</p>
+            <p>Dirección: Calle 123, Colombia</p>
+            <p>© 2025 Colombina. Todos los derechos reservados.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Redes Sociales</h3>
+            <p>Facebook | Instagram | Twitter</p>
+        </div>
+        <div class="footer-section">
+            <h3>Empresas Aliadas</h3>
+            <p>Aliado 1 | Aliado 2</p>
+        </div>
+    </footer>
+</body>
+</html>
