@@ -1,0 +1,378 @@
+/* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    padding-top: 200px;
+    background-color: black;
+    background: url('imagenes/fondo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    backdrop-filter: blur(5px);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Encabezado */
+header {
+    background: linear-gradient(to right, #376793 20%, #285ca3 100%);
+    font-family: "Bangers", system-ui;
+    font-size: 20px;
+    color: rgb(198, 71, 71);
+    padding: 15px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    top: -0px;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Imagen del logo más grande */
+header img {
+    height: 100px;
+    width: auto;
+}
+
+/* Menú de navegación */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    margin-left: 90px;
+}
+
+nav ul li {
+    margin: 0;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px; /* Letra más pequeña */
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    text-align: left; /* Alineación a la izquierda */
+}
+
+nav a:hover {
+    background-color: rgba(190, 30, 30, 0.897);
+}
+
+/* Dropdown con flecha y centrado debajo */
+.dropdown {
+    position: relative; /* Asegura que el menú se base en la posición del botón */
+}
+
+.dropdown > a::after {
+    content: ' ▼';
+    font-size: 16px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    list-style: none;
+    padding: 10px;
+    border-radius: 5px;
+    top: 100%; /* Justo debajo del botón */
+    left: 50%; /* Centrado con el botón */
+    transform: translateX(-50%); /* Corrige el centro exacto */
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    min-width: 150px; /* Ancho fijo decente para el dropdown */
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li {
+    padding: 5px;
+}
+
+.dropdown-menu a {
+    color: black;
+    text-decoration: none;
+}
+
+/* Carrito de compras más grande */
+.modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 50px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    width: 400px;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.close {
+    align-self: flex-end;
+    cursor: pointer;
+}
+
+/*------------------------------------*/
+/* contenedor del carrusel */
+
+
+.indicadores {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.indicador {
+    width: 12px;
+    height: 12px;
+    margin: 5px;
+    background-color: gray;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.indicador.activo {
+    background-color: white;
+}
+
+
+/* Información */
+.info-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background: url('background.jpg') no-repeat center center/cover;
+}
+
+.info-column {
+    flex: 1;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+}
+
+/* Productos */
+#productos {
+    padding: 20px;
+    text-align: center;
+}
+
+.product-categories {
+    margin: 20px 0;
+}
+
+#product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.product-card {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    width: 200px;
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;
+}
+
+/* Formulario de Contacto */
+#contacto {
+    background: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+form input, form select, form textarea {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.captcha {
+    background: #ccc;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+button {
+    background: #004080;/* fondo del carro*/
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Footer */
+footer {
+    background-color: #004080;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 10px;
+}
+
+/* Estilos para el nuevo carrusel 3D */
+.carousel-container {
+    perspective: 1200px;
+    width: 100%;
+    height: 300px; /* Reducimos la altura del contenedor */
+    position: relative;
+    margin: 20px 0;
+}
+
+.carousel {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: transform 1s ease-in-out;
+}
+
+.carousel-item {
+    width: 450px; /* Aumentamos el ancho de cada elemento */
+    height: 200px; /* Reducimos la altura de cada elemento */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -250px; /* Centrar horizontalmente (mitad del ancho) */
+    margin-top: -125px; /* Centrar verticalmente (mitad de la altura) */
+    transform-origin: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-item img, .carousel-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajustar la imagen/video al contenedor */
+    border-radius: 10px;
+}
+
+/* Posicionamiento de los elementos en 3D */
+.carousel-item:nth-child(1) { transform: rotateY(0deg) translateZ(400px); }
+.carousel-item:nth-child(2) { transform: rotateY(45deg) translateZ(400px); }
+.carousel-item:nth-child(3) { transform: rotateY(90deg) translateZ(400px); }
+.carousel-item:nth-child(4) { transform: rotateY(135deg) translateZ(400px); }
+.carousel-item:nth-child(5) { transform: rotateY(180deg) translateZ(400px); }
+.carousel-item:nth-child(6) { transform: rotateY(225deg) translateZ(400px); }
+.carousel-item:nth-child(7) { transform: rotateY(270deg) translateZ(400px); }
+.carousel-item:nth-child(8) { transform: rotateY(315deg) translateZ(400px); }
+
+/* Flechas de navegación */
+.nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.nav-button.left {
+    left: 20px;
+}
+
+.nav-button.right {
+    right: 20px;
+}
+
+/* Indicadores */
+.indicators {
+    position: absolute;
+    bottom: 10px; /* Ajustamos la posición vertical de los indicadores */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.indicator.active {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    padding: 20px;
+}
+
+.image-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
