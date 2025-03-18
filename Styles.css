@@ -254,40 +254,153 @@ nav a:hover {
 }
 
 /* Formulario de Contacto */
+
 #contacto {
-    background: #f0f0f0;
+    background: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    width: 500px;
     padding: 20px;
-    text-align: center;
+}
+
+h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+h2 img {
+    width: 32px;
+    height: 32px;
+}
+
+
+p {
+    color: #555;
+    font-size: 14px;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    align-items: center;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+textarea {
+    resize: none;
+    height: 80px;
+}
+
+.row {
+    display: flex;
     gap: 10px;
 }
 
-form input, form select, form textarea {
-    width: 80%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+/* Ajuste del contenedor del formulario */
+#contacto {
+    background: #fff;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+    border-radius: 30px;
+    width: 500px;
+    padding: 20px;
+    margin-left: 50px; /* Desplaza el formulario hacia la derecha */
+    margin-bottom: 50px; /* Separa el formulario del footer */
 }
 
-.captcha {
-    background: #ccc;
-    padding: 10px;
-    display: inline-block;
-    border-radius: 5px;
+/* Mantengo los ajustes de separación del captcha */
+.captcha-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px; /* Separa más el captcha del cuadro de mensaje */
 }
+
+/* Ajuste del captcha */
+.captcha {
+    font-size: 24px;
+    font-weight: bold;
+    background: #eee;
+    padding: 10px 15px;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    user-select: none;
+    color: #333;
+    font-family: 'Courier New', Courier, monospace;
+    transform: skew(-5deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 120px;
+    height: 50px;
+    overflow: hidden;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Líneas dentro del captcha */
+.captcha::before,
+.captcha::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 2px;
+    background: rgba(0, 0, 0, 0.2);
+    transform: rotate(-10deg);
+    left: 0;
+    z-index: 1;
+}
+
+.captcha::after {
+    transform: rotate(15deg);
+}
+
+/* Ajuste del input del código */
+.captcha-container input {
+    flex-grow: 1;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+/* Efecto al seleccionar el input */
+.captcha-container input:focus {
+    border-color: #27ae60;
+    outline: none;
+    box-shadow: 0 0 5px rgba(39, 174, 96, 0.5);
+}
+
 
 button {
-    background: #004080;
-    color: white;
-    padding: 10px 20px;
+    background: #27ae60;
+    color: #fff;
     border: none;
+    padding: 10px;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #218c53;
 }
 
 /* Footer */
@@ -300,6 +413,49 @@ footer {
     justify-content: space-around;
     flex-wrap: wrap;
 }
+
+input.error {
+    border: 1px solid red;
+    background: #ffe6e6;
+    animation: vibrar 0.3s ease-in-out 2;
+}
+
+.error-mensaje {
+    color: red;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+/* Animación de vibración */
+@keyframes vibrar {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+/* Mapa */
+#mapa-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#mapa-container h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+#mapa {
+    height: 400px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+
+/*Footer*/
 
 .footer-section {
     flex: 1;

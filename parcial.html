@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colombina</title>
     <link rel="stylesheet" href="Styles.css">
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-sA+eY5O5Upa4pAqfCHkUaKjvqTA40cvk/WHu4z9M0Mw="
+        crossorigin=""
+    />
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-oK3VHrs7GpefXtQGKH7Qc5ZECQOEWItY9po/Tl8DGMY="
+        crossorigin=""
+    ></script>
+
 </head>
 <body>
     <!-- Navbar -->
@@ -215,25 +227,52 @@ function showPreviousSlide() {
 
     <!-- Formulario de Contacto -->
     <section id="contacto">
-        <h2>Solicitud de Contacto</h2>
-        <form>
-            <label>Departamento a contactar</label>
-            <select>
-                <option>Asesoría</option>
-                <option>Información</option>
-                <option>Trabaja con nosotros</option>
-                <option>Queja</option>
-            </select>
-            <input type="text" placeholder="Nombre Completo">
-            <input type="text" placeholder="Teléfono">
-            <input type="email" placeholder="Correo electrónico">
-            <input type="text" placeholder="Ciudad/Departamento">
-            <textarea placeholder="Escribe tu comentario aquí"></textarea>
-            <div class="captcha">[Código de seguridad]</div>
-            <input type="text" placeholder="Código de seguridad">
-            <button type="submit">Enviar</button>
-        </form>
+        <div class="form-container">
+            <h2><img src="imagenes/icono de correo.png" alt="icono"> SOLICITUD DE CONTACTO</h2>
+            <p>Si deseas comunicarte con nuestro Centro de Atención al Cliente, por favor diligencia el formulario a continuación con tus datos.</p>
+            <form>
+                <label for="departamento">Departamento a contactar:</label>
+                <select id="departamento">
+                    <option>--</option>
+                    <option>Asesoría</option>
+                    <option>Información</option>
+                    <option>Trabaja con nosotros</option>
+                    <option>Queja</option>
+                </select>
+                <label for="nombre">Nombre completo:</label>
+                <input type="text" id="nombre" placeholder="Ejem: Pepita Perez">
+                
+                <div class="row">
+                    <label for="nombre">Teléfono:</label>
+                    <input type="text" placeholder="1234567890">
+                    <label for="nombre">Ciudad:</label>
+                    <input type="text" placeholder="Ejem: Bucaramanga">
+                </div>
+                <div class="row">
+                    <label for="nombre">Correo electrónico:</label>
+                    <input type="email" placeholder="correo@correo.com">
+                </div>
+                <label for="mensaje">Mensaje:</label>
+                <textarea id="mensaje" placeholder="Escribe tu comentario aquí"></textarea>
+                <div class="captcha-container">
+                    <label for="codigo-seguridad"><strong>Código de seguridad:</strong></label>
+                    <div class="captcha" id="codigo-seguridad">FBT004</div>
+                    <input type="text" placeholder="Ingresa el código">
+                </div>               
+               
+                <button type="submit">ENVIAR</button>
+            </form>
+           
+            
+        </div>
     </section>
+
+    <!--Mapa-->
+    <div id="mapa-container">
+        <h3>📍 Nuestra Ubicación</h3>
+        <div id="mapa"></div>
+    </div>   
+    
 
     <!-- Footer -->
     <footer>
@@ -256,5 +295,119 @@ function showPreviousSlide() {
             <p>Aliado 1 | Aliado 2</p>
         </div>
     </footer>
+    
+    <script>
+        function generarCaptcha() {
+            const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let captcha = "";
+            for (let i = 0; i < 6; i++) {
+                captcha += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+            document.querySelector(".captcha").textContent = captcha;
+        }
+    
+        function mostrarError(elemento, mensaje) {
+            const errorPrevio = elemento.nextElementSibling;
+            if (errorPrevio && errorPrevio.classList.contains("error-mensaje")) {
+                errorPrevio.remove();
+            }
+
+            const errorMensaje = document.createElement("div");
+            errorMensaje.className = "error-mensaje";
+            errorMensaje.style.color = "red";
+            errorMensaje.style.fontSize = "12px";
+            errorMensaje.style.marginTop = "3px";
+            errorMensaje.textContent = mensaje;
+
+            elemento.after(errorMensaje);
+
+            elemento.classList.add("error"); // Agrega la clase para la animación
+        }
+
+        // Limpia el error y la animación
+        function limpiarError(elemento) {
+            const errorPrevio = elemento.nextElementSibling;
+            if (errorPrevio && errorPrevio.classList.contains("error-mensaje")) {
+                errorPrevio.remove();
+            }
+            elemento.classList.remove("error");
+        }
+
+    
+        document.querySelector("form").addEventListener("submit", function (e) {
+            e.preventDefault();
+    
+            const nombre = document.getElementById("nombre");
+            const telefono = document.querySelector('input[placeholder="1234567890"]');
+            const correo = document.querySelector('input[placeholder="correo@correo.com"]');
+            const captchaIngresado = document.querySelector('input[placeholder="Ingresa el código"]');
+            const captchaCorrecto = document.querySelector(".captcha").textContent.trim();
+    
+            let valido = true; // Bandera para controlar el envío solo si todo está bien
+    
+            // Validación de nombre (solo letras y espacios)
+            const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+            if (!nombreRegex.test(nombre.value.trim())) {
+                mostrarError(nombre, "El nombre solo debe contener letras y espacios.");
+                valido = false;
+            } else {
+                limpiarError(nombre);
+            }
+    
+            // Validación de teléfono (solo números)
+            const telefonoRegex = /^[0-9]+$/;
+            if (!telefonoRegex.test(telefono.value.trim())) {
+                mostrarError(telefono, "El teléfono solo debe contener números.");
+                valido = false;
+            } else {
+                limpiarError(telefono);
+            }
+    
+            // Validación de correo electrónico
+            const correoRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!correoRegex.test(correo.value.trim())) {
+                mostrarError(correo, "Por favor, ingresa un correo electrónico válido.");
+                valido = false;
+            } else {
+                limpiarError(correo);
+            }
+    
+            // Validación del captcha
+            if (captchaIngresado.value.trim() !== captchaCorrecto) {
+                mostrarError(captchaIngresado, "Código de seguridad incorrecto.");
+                generarCaptcha(); // Genera un nuevo captcha
+                valido = false;
+            } else {
+                limpiarError(captchaIngresado);
+            }
+    
+            // Si todo está correcto, envía el formulario
+            if (valido) {
+                alert("Formulario enviado correctamente.");
+                document.querySelector("form").reset();
+                generarCaptcha(); // Reinicia el captcha después del envío exitoso
+            }
+        });
+    
+        window.onload = generarCaptcha;
+        
+        // Coordenadas aproximadas del Parque Industrial de Bucaramanga
+        const latitud = 7.12539;
+        const longitud = -73.1198;
+
+        // Inicializa el mapa centrado en las coordenadas
+        const mapa = L.map("mapa").setView([latitud, longitud], 15);
+
+        // Carga y muestra los tiles de OpenStreetMap
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors",
+        }).addTo(mapa);
+
+        // Agrega un marcador en la ubicación aproximada
+        L.marker([latitud, longitud])
+            .addTo(mapa)
+            .bindPopup("<b>Colombina S.A.</b><br>Parque Industrial de Bucaramanga, Calle F, Bodega 131")
+            .openPopup();
+    </script>             
 </body>
 </html>
