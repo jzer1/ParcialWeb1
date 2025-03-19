@@ -6,6 +6,18 @@
     <title>Colombina</title>
     <link rel="stylesheet" href="Styles.css"> <!-- Archivo CSS principal -->
     <link rel="stylesheet" href="carousel.css"> <!-- Archivo CSS para el carrusel -->
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+eY5O5Upa4pAqfCHkUaKjvqTA40cvk/WHu4z9M0Mw="
+    crossorigin=""
+/>
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-oK3VHrs7GpefXtQGKH7Qc5ZECQOEWItY9po/Tl8DGMY="
+    crossorigin=""
+></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -92,86 +104,76 @@
 
     <!-- Script para el carrusel 3D -->
     <script>
-    const carousel = document.getElementById("carousel");
-const prevButton = document.getElementById("prevButton");
-const nextButton = document.getElementById("nextButton");
-const indicators = document.querySelectorAll(".indicator");
+        const carousel = document.getElementById("carousel");
+        const prevButton = document.getElementById("prevButton");
+        const nextButton = document.getElementById("nextButton");
+        const indicators = document.querySelectorAll(".indicator");
 
-let currentAngle = 0; // Ángulo actual de rotación
-const angleIncrement = 60; // Grados a rotar por clic
-let currentIndex = 0; // Índice actual del carrusel
+        let currentAngle = 0; // Ángulo actual de rotación
+        const angleIncrement = 60; // Grados a rotar por clic
+        let currentIndex = 0; // Índice actual del carrusel
+        let autoRotate; // Variable para el intervalo de rotación automática
 
-// Función para rotar el carrusel
-function rotateCarousel(angle) {
-    currentAngle += angle;
-    carousel.style.transform = `rotateY(${currentAngle}deg)`;
-    updateIndicators();
-}
-
-// Función para actualizar los indicadores
-function updateIndicators() {
-    indicators.forEach((indicator, index) => {
-        if (index === currentIndex) {
-            indicator.classList.add("active");
-        } else {
-            indicator.classList.remove("active");
+        // Función para rotar el carrusel
+        function rotateCarousel(angle) {
+            currentAngle += angle;
+            carousel.style.transform = `rotateY(${currentAngle}deg)`; // Usar backticks
+            updateIndicators();
         }
-    });
-}
 
-// Eventos para las flechas
-prevButton.addEventListener("click", () => {
-    currentIndex = (currentIndex - 1 + indicators.length) % indicators.length;
-    rotateCarousel(angleIncrement);
-});
+        // Función para actualizar los indicadores
+        function updateIndicators() {
+            indicators.forEach((indicator, index) => {
+                if (index === currentIndex) {
+                    indicator.classList.add("active");
+                } else {
+                    indicator.classList.remove("active");
+                }
+            });
+        }
 
-nextButton.addEventListener("click", () => {
-    currentIndex = (currentIndex + 1) % indicators.length;
-    rotateCarousel(-angleIncrement);
-});
+        // Eventos para las flechas de navegación
+        prevButton.addEventListener("click", () => {
+            clearInterval(autoRotate); // Detener el giro automático
+            currentIndex = (currentIndex - 1 + indicators.length) % indicators.length;
+            rotateCarousel(angleIncrement);
+            resetAutoRotate(); // Reiniciar el giro automático
+        });
 
-// Eventos para los indicadores
-indicators.forEach((indicator, index) => {
-    indicator.addEventListener("click", () => {
-        const targetIndex = parseInt(indicator.getAttribute("data-index"));
-        const angleDifference = (targetIndex - currentIndex) * angleIncrement;
-        currentIndex = targetIndex;
-        rotateCarousel(-angleDifference);
-    });
-});
+        nextButton.addEventListener("click", () => {
+            clearInterval(autoRotate); // Detener el giro automático
+            currentIndex = (currentIndex + 1) % indicators.length;
+            rotateCarousel(-angleIncrement);
+            resetAutoRotate(); // Reiniciar el giro automático
+        });
 
-// Inicializar indicadores
-updateIndicators();
-let autoRotate = setInterval(() => {
-    currentIndex = (currentIndex + 1) % 6;
-    rotateCarousel(-angleIncrement);
-}, 3000);
+        // Eventos para los indicadores
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener("click", () => {
+                clearInterval(autoRotate); // Detener el giro automático
+                const targetIndex = parseInt(indicator.getAttribute("data-index"));
+                const angleDifference = (targetIndex - currentIndex) * angleIncrement;
+                currentIndex = targetIndex;
+                rotateCarousel(-angleDifference);
+                resetAutoRotate(); // Reiniciar el giro automático
+            });
+        });
 
-// Detener el giro automático al interactuar
-prevButton.addEventListener("click", () => {
-    clearInterval(autoRotate); // Detiene el giro automático
-    currentIndex = (currentIndex - 1 + 6) % 6;
-    rotateCarousel(angleIncrement);
-});
+        // Función para reiniciar la rotación automática
+        function resetAutoRotate() {
+            autoRotate = setInterval(() => {
+                currentIndex = (currentIndex + 1) % indicators.length;
+                rotateCarousel(-angleIncrement);
+            }, 3000); // Rotar cada 3 segundos
+        }
 
-nextButton.addEventListener("click", () => {
-    clearInterval(autoRotate); // Detiene el giro automático
-    currentIndex = (currentIndex + 1) % 6;
-    rotateCarousel(-angleIncrement);
-});
+        // Inicializar indicadores y rotación automática
+        updateIndicators();
+        resetAutoRotate();
     </script>
 
     <!-- Sección de Información -->
     <section class="info-section">
-        <div class="info-column">
-            <h2>¿Quiénes somos?</h2>
-            <p>
-                Colombina es una compañía global de alimentos con más de 95 años de experiencia, 
-                dedicada a cautivar a los consumidores a través de la innovación y el sabor de sus productos. 
-                Opera bajo un modelo de gestión integral y transparente, fabricando y comercializando alimentos en 19 categorías diferentes, 
-                gracias a un equipo de colaboradores que crea las mejores experiencias.
-            </p>
-        </div>
         <div class="info-column">
             <h2>Plantas de producción</h2>
             <ul>
@@ -183,11 +185,31 @@ nextButton.addEventListener("click", () => {
                         Especializada en la producción de salsas y conservas bajo la marca La Constancia</li>
             </ul>
         </div>
-        <div class="info-column">
+        <div class="info-column news-section">
             <h2>Noticias</h2>
-            <div class="news-box">Noticia 1</div>
-            <div class="news-box">Noticia 2</div>
-            <div class="news-box">Noticia 3</div>
+            <div class="news-container">
+                <div class="news-box">
+                    <img src="imagenes/mcdonalds-y-colombina-lanzan-un-sundae-de-bon-bon-bum-.jpg" alt="Gomitas"> 
+                    <h3> Bon Bon Bum y McDonald’s la rompen en el FEP gracias al sundae con salsa de la tradicional chupeta roja </h3>
+                </div>
+                <div class="news-box">
+                    <img src="imagenes/nucita.jpg" alt="nucita">
+                    <h3>Nucita Masticable, la nueva forma de disfrutar de uno los dulces favoritos de los colombianos</h3>
+                </div>
+                <div class="news-box">
+                    <img src="imagenes/Bom-Choco.jpg" alt="nucita">
+                    <h3>Ahora dos de los sabores más icónicos de Colombina en un solo mordisco: Choco Break relleno sabor a Bon Bon Bum Rojo</h3>
+                </div>
+                <div class="news-box">
+                    <img src="imagenes/ser mujer.jpg" alt="nucita">
+                    <h3>!Celebramos a las mujeres que hacen del mundo un lugar más hermoso!</h3>
+                </div>
+                <div class="news-box">
+                    <img src="imagenes/heladoNucita.jpg" alt="nucita">
+                    <h3>Una combinación extraordinaria de crema y chocolate
+                        ¿Qué esperas para probarla?</h3>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -205,49 +227,358 @@ nextButton.addEventListener("click", () => {
         </div>
         <div id="product-list"></div>
     </section>
+    <!--lista de productos-->
+    <div class="contenedor-slider">
+        <button class="boton-flecha izquierda" onclick="moverSlider(-1)">&#10094;</button>
+        
+        <div class="slider">
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/bonBonBum.jpg" alt="Café Irish">
+                </div>
+                <h5>Chupeta BON BON BUM con chicle sabores surtidos </h5>
+                <p>$4.60</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/carameloNucita.jpg" alt="Café Inglés">
+                </div>
+                <h5>Caramelo Masticable NUCITA relleno</h5>
+                <p>$5.70</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/chocoBreak.jpg" alt="Café Australiano">
+                </div>
+                <h5>Chocolate  CHOCOBREAK frutal </h5>
+                <p>$3.20</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/gomitasSoup.jpg" alt="Café Helado">
+                </div>
+                <h5>Gomas GRISSLY sandía sour </h5>
+                <p>$5.60</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/coffe.jpg" alt="Café Mocha">
+                </div>
+                <h5>Caramelo blando COFFEE DELIGHT de café </h5>
+                <p>$4.90</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/chocoCono.jpg" alt="Café Latte">
+                </div>
+                <h5>Cono ROBIN HOOD mega chocomaní</h5>
+                <p>$3.80</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/galletaHelado.jpg" alt="Café Latte">
+                </div>
+                <h5>Galleta con helado COLOMBINA cookies and cream</h5>
+                <p>$3.80</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/galletaChocolate.jpg" alt="Café Latte">
+                </div>
+                <h5>Galleta CHOCO MUUU </h5>
+                <p>$3.80</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/galletasBridge.jpg" alt="Café Latte">
+                </div>
+                <h5>Galleta wafer BRIDGE arequipe</h5>
+                <p>$3.80</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+        </div>
+    
+        <button class="boton-flecha derecha" onclick="moverSlider(1)">&#10095;</button>
+    </div>
+    
+    <script>
+        let posicion = 0;
+        const slider = document.querySelector(".slider");
+        const totalProductos = document.querySelectorAll(".producto").length;
+        const productosPorVista = 4; // Cantidad de productos visibles
+        const anchoProducto = document.querySelector(".producto").offsetWidth + 20; // Incluye margen
+    
+        function moverSlider(direccion) {
+            const maxPosicion = -(totalProductos - productosPorVista) * anchoProducto;
+            
+            if (direccion === 1 && posicion > maxPosicion) {
+                posicion -= anchoProducto;
+            } else if (direccion === -1 && posicion < 0) {
+                posicion += anchoProducto;
+            }
+    
+            // Asegúrate de que no se desplace más allá del último producto
+            if (posicion < maxPosicion) {
+                posicion = maxPosicion;
+            } else if (posicion > 0) {
+                posicion = 0;
+            }
+    
+            slider.style.transform = `translateX(${posicion}px)`;
+        }
+    </script>
+    
 
-    <!-- Formulario de Contacto -->
-    <section id="contacto">
-        <h2>Solicitud de Contacto</h2>
+
+<!-- Formulario de Contacto -->
+<section id="contacto">
+    <div class="form-container">
+        <h2><img src="imagenes/icono de correo.png" alt="icono"> SOLICITUD DE CONTACTO</h2>
+        <p>Si deseas comunicarte con nuestro Centro de Atención al Cliente, por favor diligencia el formulario a continuación con tus datos.</p>
         <form>
-            <label>Departamento a contactar</label>
-            <select>
+            <label for="departamento">Departamento a contactar:</label>
+            <select id="departamento">
+                <option>--</option>
                 <option>Asesoría</option>
                 <option>Información</option>
                 <option>Trabaja con nosotros</option>
                 <option>Queja</option>
             </select>
-            <input type="text" placeholder="Nombre Completo">
-            <input type="text" placeholder="Teléfono">
-            <input type="email" placeholder="Correo electrónico">
-            <input type="text" placeholder="Ciudad/Departamento">
-            <textarea placeholder="Escribe tu comentario aquí"></textarea>
-            <div class="captcha">[Código de seguridad]</div>
-            <input type="text" placeholder="Código de seguridad">
-            <button type="submit">Enviar</button>
+            <label for="nombre">Nombre completo:</label>
+            <input type="text" id="nombre" placeholder="Ejem: Pepita Perez">
+            
+            <div class="row">
+                <label for="nombre">Teléfono:</label>
+                <input type="text" placeholder="1234567890">
+                <label for="nombre">Ciudad:</label>
+                <input type="text" placeholder="Ejem: Bucaramanga">
+            </div>
+            <div class="row">
+                <label for="nombre">Correo electrónico:</label>
+                <input type="email" placeholder="correo@correo.com">
+            </div>
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" placeholder="Escribe tu comentario aquí"></textarea>
+            <div class="captcha-container">
+                <label for="codigo-seguridad"><strong>Código de seguridad:</strong></label>
+                <div class="captcha" id="codigo-seguridad">FBT004</div>
+                <input type="text" placeholder="Ingresa el código">
+            </div>               
+           
+            <button type="submit">ENVIAR</button>
         </form>
-    </section>
+       
+        
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-section">
-            <img src="logo.png" alt="Logo">
-            <p>Colombina</p>
+
+<!-- Footer -->
+<footer>
+<!-- Sección izquierda: Logo e información de Colombina -->
+    <div class="footer-left">
+        <img src="imagenes/logo-nav.png" alt="Logo Colombina">
+        <p>📍 Dirección: Calle 123, Ciudad, País</p>
+        <p>📧 Correo: contacto@colombina.com</p>
+        <p>📞 Teléfono: +57 123 456 7890</p>
+        <div class="socials-container">
+            <h4>Síguenos en:</h4>
+            <a href="https://beacons.ai/elsaboresinfinito" target="_blank" class="icon">
+                <i class="fas fa-link"></i>
+            </a>
+            <a href="https://instagram.com/colombinaoficial" target="_blank" class="icon">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://youtube.com/@colombinaoficial?si=EfnA8BWKrjs7nYOg" target="_blank" class="icon">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://www.tiktok.com/@mi_colombina?is_from_webapp=1&sender_device=pc" target="_blank" class="icon">
+                <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="https://www.facebook.com/ColombinaOficial/" target="_blank" class="icon">
+                <i class="fab fa-facebook-f"></i>
+            </a>
         </div>
-        <div class="footer-section">
-            <h3>Contacto</h3>
-            <p>Correo: info@colombina.com</p>
-            <p>Dirección: Calle 123, Colombia</p>
-            <p>© 2025 Colombina. Todos los derechos reservados.</p>
+        
+    </div>
+
+<!-- Sección central: Empresas asociadas -->
+    <div class="footer-center">
+        <h4>Encuentra todos nuestros productos en:</h4>
+        <div class="brands-container">
+            <div class="brand"><img src="imagenes/Logo exito.png" alt="Exito"></div>
+            <div class="brand"><img src="imagenes/logo de jumbo.png" alt="Jumbo"></div>
+            <div class="brand"><img src="imagenes/logo de market colombina.png" alt="Market Colombina"></div>
+            <div class="brand"><img src="imagenes/logo de carulla.png" alt="Carulla"></div>
+            <div class="brand"><img src="imagenes/logo merqueo.png" alt="Merqueo"></div>
+            <div class="brand"><img src="imagenes/logo rappi.png" alt="Rappi"></div>
         </div>
-        <div class="footer-section">
-            <h3>Redes Sociales</h3>
-            <p>Facebook | Instagram | Twitter</p>
-        </div>
-        <div class="footer-section">
-            <h3>Empresas Aliadas</h3>
-            <p>Aliado 1 | Aliado 2</p>
-        </div>
-    </footer>
+    </div>
+
+<!-- Mapa -->
+    <div class="map-container">
+        <h4>📍Nuestra Ubicación</h4>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d53528.24342276858!2d-76.06841633148368!3d4.314726053739298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e384a6336944b6b%3A0xa8be72db46322459!2sFabrica%20De%20Dulces%20Colombina!5e0!3m2!1ses!2sco!4v1742391170832!5m2!1ses!2sco" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+</footer>
+
+    <div class="copyright">
+        <p>&copy; 2025 Colombina S.A. Todos los derechos reservados.</p>
+    </div> 
+
+
+
+<!-- Leaflet CSS y JS -->
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+eY5O5Upa4pAqfCHkUaKjvqTA40cvk/WHu4z9M0Mw="
+    crossorigin=""
+/>
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-oK3VHrs7GpefXtQGKH7Qc5ZECQOEWItY9po/Tl8DGMY="
+    crossorigin=""
+></script>
+
+<script>
+    // Inicializa el mapa con Leaflet
+    const map = L.map("mapa-footer").setView([7.1153, -73.1207], 15);
+
+    // Carga el mapa de OpenStreetMap
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(map);
+
+    // Añadir marcador en la ubicación de Colombina S.A.
+    L.marker([7.1153, -73.1207])
+        .addTo(map)
+        .bindPopup("<strong>Colombina S.A.</strong><br>Parque Industrial de Bucaramanga")
+        .openPopup();
+</script>
+
+
+
+<script>
+    function generarCaptcha() {
+        const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        let captcha = "";
+        for (let i = 0; i < 6; i++) {
+            captcha += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+        }
+        document.querySelector(".captcha").textContent = captcha;
+    }
+
+    function mostrarError(elemento, mensaje) {
+        const errorPrevio = elemento.nextElementSibling;
+        if (errorPrevio && errorPrevio.classList.contains("error-mensaje")) {
+            errorPrevio.remove();
+        }
+
+        const errorMensaje = document.createElement("div");
+        errorMensaje.className = "error-mensaje";
+        errorMensaje.style.color = "red";
+        errorMensaje.style.fontSize = "12px";
+        errorMensaje.style.marginTop = "3px";
+        errorMensaje.textContent = mensaje;
+
+        elemento.after(errorMensaje);
+
+        elemento.classList.add("error"); // Agrega la clase para la animación
+    }
+
+    // Limpia el error y la animación
+    function limpiarError(elemento) {
+        const errorPrevio = elemento.nextElementSibling;
+        if (errorPrevio && errorPrevio.classList.contains("error-mensaje")) {
+            errorPrevio.remove();
+        }
+        elemento.classList.remove("error");
+    }
+
+
+    document.querySelector("form").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const nombre = document.getElementById("nombre");
+        const telefono = document.querySelector('input[placeholder="1234567890"]');
+        const correo = document.querySelector('input[placeholder="correo@correo.com"]');
+        const captchaIngresado = document.querySelector('input[placeholder="Ingresa el código"]');
+        const captchaCorrecto = document.querySelector(".captcha").textContent.trim();
+
+        let valido = true; // Bandera para controlar el envío solo si todo está bien
+
+        // Validación de nombre (solo letras y espacios)
+        const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+        if (!nombreRegex.test(nombre.value.trim())) {
+            mostrarError(nombre, "El nombre solo debe contener letras y espacios.");
+            valido = false;
+        } else {
+            limpiarError(nombre);
+        }
+
+        // Validación de teléfono (solo números)
+        const telefonoRegex = /^[0-9]+$/;
+        if (!telefonoRegex.test(telefono.value.trim())) {
+            mostrarError(telefono, "El teléfono solo debe contener números.");
+            valido = false;
+        } else {
+            limpiarError(telefono);
+        }
+
+        // Validación de correo electrónico
+        const correoRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!correoRegex.test(correo.value.trim())) {
+            mostrarError(correo, "Por favor, ingresa un correo electrónico válido.");
+            valido = false;
+        } else {
+            limpiarError(correo);
+        }
+
+        // Validación del captcha
+        if (captchaIngresado.value.trim() !== captchaCorrecto) {
+            mostrarError(captchaIngresado, "Código de seguridad incorrecto.");
+            generarCaptcha(); // Genera un nuevo captcha
+            valido = false;
+        } else {
+            limpiarError(captchaIngresado);
+        }
+
+        // Si todo está correcto, envía el formulario
+        if (valido) {
+            alert("Formulario enviado correctamente.");
+            document.querySelector("form").reset();
+            generarCaptcha(); // Reinicia el captcha después del envío exitoso
+        }
+    });
+
+    window.onload = generarCaptcha;
+    
+    // Coordenadas aproximadas del Parque Industrial de Bucaramanga
+    const latitud = 7.12539;
+    const longitud = -73.1198;
+
+    // Inicializa el mapa centrado en las coordenadas
+    const mapa = L.map("mapa").setView([latitud, longitud], 15);
+
+    // Carga y muestra los tiles de OpenStreetMap
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(mapa);
+
+    // Agrega un marcador en la ubicación aproximada
+    L.marker([latitud, longitud])
+        .addTo(mapa)
+        .bindPopup("<b>Colombina S.A.</b><br>Parque Industrial de Bucaramanga, Calle F, Bodega 131")
+        .openPopup();
+</script>             
 </body>
 </html>
