@@ -92,7 +92,7 @@
 
     <!-- Script para el carrusel 3D -->
     <script>
-    const carousel = document.getElementById("carousel");
+ const carousel = document.getElementById("carousel");
 const prevButton = document.getElementById("prevButton");
 const nextButton = document.getElementById("nextButton");
 const indicators = document.querySelectorAll(".indicator");
@@ -100,15 +100,16 @@ const indicators = document.querySelectorAll(".indicator");
 let currentAngle = 0; // Ángulo actual de rotación
 const angleIncrement = 60; // Grados a rotar por clic
 let currentIndex = 0; // Índice actual del carrusel
+let autoRotate; // Variable para el intervalo de rotación automática
 
 // Función para rotar el carrusel
 function rotateCarousel(angle) {
     currentAngle += angle;
-    carousel.style.transform = `rotateY(${currentAngle}deg)`;
+    carousel.style.transform = `rotateY(${currentAngle}deg)`; // Usar backticks
     updateIndicators();
 }
 
-
+// Función para actualizar los indicadores
 function updateIndicators() {
     indicators.forEach((indicator, index) => {
         if (index === currentIndex) {
@@ -119,59 +120,48 @@ function updateIndicators() {
     });
 }
 
-// Eventos para las flechas
+// Eventos para las flechas de navegación
 prevButton.addEventListener("click", () => {
+    clearInterval(autoRotate); // Detener el giro automático
     currentIndex = (currentIndex - 1 + indicators.length) % indicators.length;
     rotateCarousel(angleIncrement);
+    resetAutoRotate(); // Reiniciar el giro automático
 });
 
 nextButton.addEventListener("click", () => {
+    clearInterval(autoRotate); // Detener el giro automático
     currentIndex = (currentIndex + 1) % indicators.length;
     rotateCarousel(-angleIncrement);
+    resetAutoRotate(); // Reiniciar el giro automático
 });
 
 // Eventos para los indicadores
 indicators.forEach((indicator, index) => {
     indicator.addEventListener("click", () => {
+        clearInterval(autoRotate); // Detener el giro automático
         const targetIndex = parseInt(indicator.getAttribute("data-index"));
         const angleDifference = (targetIndex - currentIndex) * angleIncrement;
         currentIndex = targetIndex;
         rotateCarousel(-angleDifference);
+        resetAutoRotate(); // Reiniciar el giro automático
     });
 });
 
-// Inicializar indicadores
+// Función para reiniciar la rotación automática
+function resetAutoRotate() {
+    autoRotate = setInterval(() => {
+        currentIndex = (currentIndex + 1) % indicators.length;
+        rotateCarousel(-angleIncrement);
+    }, 3000); // Rotar cada 3 segundos
+}
+
+// Inicializar indicadores y rotación automática
 updateIndicators();
-let autoRotate = setInterval(() => {
-    currentIndex = (currentIndex + 1) % 6;
-    rotateCarousel(-angleIncrement);
-}, 3000);
-
-// Detener el giro automático al interactuar
-prevButton.addEventListener("click", () => {
-    clearInterval(autoRotate); // Detiene el giro automático
-    currentIndex = (currentIndex - 1 + 6) % 6;
-    rotateCarousel(angleIncrement);
-});
-
-nextButton.addEventListener("click", () => {
-    clearInterval(autoRotate); // Detiene el giro automático
-    currentIndex = (currentIndex + 1) % 6;
-    rotateCarousel(-angleIncrement);
-});
+resetAutoRotate();
     </script>
 
     <!-- Sección de Información -->
     <section class="info-section">
-        <div class="info-column">
-            <h2>¿Quiénes somos?</h2>
-            <p>
-                Colombina es una compañía global de alimentos con más de 95 años de experiencia, 
-                dedicada a cautivar a los consumidores a través de la innovación y el sabor de sus productos. 
-                Opera bajo un modelo de gestión integral y transparente, fabricando y comercializando alimentos en 19 categorías diferentes, 
-                gracias a un equipo de colaboradores que crea las mejores experiencias.
-            </p>
-        </div>
         <div class="info-column">
             <h2>Plantas de producción</h2>
             <ul>
@@ -183,11 +173,31 @@ nextButton.addEventListener("click", () => {
                         Especializada en la producción de salsas y conservas bajo la marca La Constancia</li>
             </ul>
         </div>
-        <div class="info-column">
+        <div class="info-column news-section">
             <h2>Noticias</h2>
-            <div class="news-box">Noticia 1</div>
-            <div class="news-box">Noticia 2</div>
-            <div class="news-box">Noticia 3</div>
+            <div class="news-container">
+                <div class="news-box">
+                    <img src="imagenes/mcdonalds-y-colombina-lanzan-un-sundae-de-bon-bon-bum-.jpg" alt="Gomitas"> 
+                    <h3> Bon Bon Bum y McDonald’s la rompen en el FEP gracias al sundae con salsa de la tradicional chupeta roja </h3>
+                </div>
+                <div class="news-box">
+                    <img src="imagenes/nucita.jpg" alt="nucita">
+                    <h3>Nucita Masticable, la nueva forma de disfrutar de uno los dulces favoritos de los colombianos</h3>
+                </div>
+                <div class="news-box">
+                    <img src="imagenes/Bom-Choco.jpg" alt="nucita">
+                    <h3>Ahora dos de los sabores más icónicos de Colombina en un solo mordisco: Choco Break relleno sabor a Bon Bon Bum Rojo</h3>
+                </div>
+                <div class="news-box">
+                    <img src="imagenes/ser mujer.jpg" alt="nucita">
+                    <h3>!Celebramos a las mujeres que hacen del mundo un lugar más hermoso!</h3>
+                </div>
+                <div class="news-box">
+                    <img src="imagenes/heladoNucita.jpg" alt="nucita">
+                    <h3>Una combinación extraordinaria de crema y chocolate
+                        ¿Qué esperas para probarla?</h3>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -205,7 +215,115 @@ nextButton.addEventListener("click", () => {
         </div>
         <div id="product-list"></div>
     </section>
-
+    <!--lista de productos-->
+    <div class="contenedor-slider">
+        <button class="boton-flecha izquierda" onclick="moverSlider(-1)">&#10094;</button>
+        
+        <div class="slider">
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/bonBonBum.jpg" alt="Café Irish">
+                </div>
+                <h5>Chupeta BON BON BUM con chicle sabores surtidos </h5>
+                <p>$4.60</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/carameloNucita.jpg" alt="Café Inglés">
+                </div>
+                <h5>Caramelo Masticable NUCITA relleno</h5>
+                <p>$5.70</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/chocoBreak.jpg" alt="Café Australiano">
+                </div>
+                <h5>Chocolate  CHOCOBREAK frutal </h5>
+                <p>$3.20</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/gomitasSoup.jpg" alt="Café Helado">
+                </div>
+                <h5>Gomas GRISSLY sandía sour </h5>
+                <p>$5.60</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/coffe.jpg" alt="Café Mocha">
+                </div>
+                <h5>Caramelo blando COFFEE DELIGHT de café </h5>
+                <p>$4.90</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/chocoCono.jpg" alt="Café Latte">
+                </div>
+                <h5>Cono ROBIN HOOD mega chocomaní</h5>
+                <p>$3.80</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/galletaHelado.jpg" alt="Café Latte">
+                </div>
+                <h5>Galleta con helado COLOMBINA cookies and cream</h5>
+                <p>$3.80</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/galletaChocolate.jpg" alt="Café Latte">
+                </div>
+                <h5>Galleta CHOCO MUUU </h5>
+                <p>$3.80</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+            <div class="producto">
+                <div class="contenedor-imagen">
+                    <img src="imagenes/galletasBridge.jpg" alt="Café Latte">
+                </div>
+                <h5>Galleta wafer BRIDGE arequipe</h5>
+                <p>$3.80</p>
+                <button class="boton-comprar">🛒 Agregar</button>
+            </div>
+        </div>
+    
+        <button class="boton-flecha derecha" onclick="moverSlider(1)">&#10095;</button>
+    </div>
+    
+    <script>
+        let posicion = 0;
+        const slider = document.querySelector(".slider");
+        const totalProductos = document.querySelectorAll(".producto").length;
+        const productosPorVista = 4; // Cantidad de productos visibles
+        const anchoProducto = document.querySelector(".producto").offsetWidth + 20; // Incluye margen
+    
+        function moverSlider(direccion) {
+            const maxPosicion = -(totalProductos - productosPorVista) * anchoProducto;
+            
+            if (direccion === 1 && posicion > maxPosicion) {
+                posicion -= anchoProducto;
+            } else if (direccion === -1 && posicion < 0) {
+                posicion += anchoProducto;
+            }
+    
+            // Asegúrate de que no se desplace más allá del último producto
+            if (posicion < maxPosicion) {
+                posicion = maxPosicion;
+            } else if (posicion > 0) {
+                posicion = 0;
+            }
+    
+            slider.style.transform = `translateX(${posicion}px)`;
+        }
+    </script>
+    
     <!-- Formulario de Contacto -->
     <section id="contacto">
         <h2>Solicitud de Contacto</h2>
