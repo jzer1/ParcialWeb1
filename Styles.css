@@ -403,61 +403,117 @@ button:hover {
     background: #218c53;
 }
 
-/* Footer */
+
+/**/
+
+/* Estilos generales del footer */
 footer {
-    background-color: #004080;
+    background: linear-gradient(to right, #002fff 20%, #61bcf5 100%);
     color: white;
-    text-align: center;
     padding: 20px;
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    max-width: 20000px;
+    margin: auto;
 }
 
-input.error {
-    border: 1px solid red;
-    background: #ffe6e6;
-    animation: vibrar 0.3s ease-in-out 2;
+/* Sección izquierda: Logo e información de Colombina */
+.footer-left {
+    flex: 1;
+    text-align: left;
+    
+}
+.footer-left img {
+    width: 200px;
+}
+.footer-left p {
+    margin: 5px 0;
+    color: white;
 }
 
-.error-mensaje {
-    color: red;
-    font-size: 12px;
-    margin-top: 3px;
+.socials-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* Espaciado entre íconos */
 }
 
-/* Animación de vibración */
-@keyframes vibrar {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
+.socials-container a {
+    font-size: 30px;
+    color: white;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out, color 0.2s ease;
+    display: inline-block; /* Asegura que la transformación funcione */
 }
 
-/* Mapa */
-#mapa-container {
-    margin-top: 20px;
+/* Efecto de escala y cambio de color */
+.socials-container a:hover {
+    transform: scale(1.3) rotate(10deg); /* Gira ligeramente además de agrandar */
+    color: #ff7300; /* Color llamativo al pasar el mouse */
+}
+
+/* Sección central de empresas asociadas */
+.footer-center {
+    flex: 2.5;
     text-align: center;
 }
-
-#mapa-container h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #333;
+.footer-center h4 {
+    margin-bottom: 30px;
+    font-size: 30px;
+    font-weight: bold;
 }
-
-#mapa {
-    height: 400px;
-    width: 100%;
+.brands-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.brand {
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    filter: brightness(0.7);
+}
+.brand img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.brand:hover {
+    transform: scale(1.6);
+    filter: brightness(1.2);
+    z-index: 30;
+    margin: 0 5px;
 }
 
+/* Ajusta el iframe para ser totalmente interactivo */
+.map-container iframe {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    border-radius: 8px;
+    border: 2px solid #fff;
+    pointer-events: auto; /* Asegura la interacción */
+    overflow: hidden; /* Previene desbordamientos */
+    cursor: grab; /* Da la sensación de arrastrar */
+}
 
-/*Footer*/
+/* Cambia el cursor mientras arrastras */
+.map-container iframe:active {
+    cursor: grabbing;
+}
 
-.footer-section {
-    flex: 1;
-    padding: 10px;
+/* Copyright abajo centrado */
+.copyright {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+    color: #fff;
 }

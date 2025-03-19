@@ -16,7 +16,7 @@
         integrity="sha256-oK3VHrs7GpefXtQGKH7Qc5ZECQOEWItY9po/Tl8DGMY="
         crossorigin=""
     ></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -267,34 +267,92 @@ function showPreviousSlide() {
         </div>
     </section>
 
-    <!--Mapa-->
-    <div id="mapa-container">
-        <h3>📍 Nuestra Ubicación</h3>
-        <div id="mapa"></div>
-    </div>   
-    
 
     <!-- Footer -->
     <footer>
-        <div class="footer-section">
-            <img src="logo.png" alt="Logo">
-            <p>Colombina</p>
+    <!-- Sección izquierda: Logo e información de Colombina -->
+        <div class="footer-left">
+            <img src="imagenes/logo-nav.png" alt="Logo Colombina">
+            <p>📍 Dirección: Calle 123, Ciudad, País</p>
+            <p>📧 Correo: contacto@colombina.com</p>
+            <p>📞 Teléfono: +57 123 456 7890</p>
+            <div class="socials-container">
+                <h4>Síguenos en:</h4>
+                <a href="https://beacons.ai/elsaboresinfinito" target="_blank" class="icon">
+                    <i class="fas fa-link"></i>
+                </a>
+                <a href="https://instagram.com/colombinaoficial" target="_blank" class="icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://youtube.com/@colombinaoficial?si=EfnA8BWKrjs7nYOg" target="_blank" class="icon">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://www.tiktok.com/@mi_colombina?is_from_webapp=1&sender_device=pc" target="_blank" class="icon">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://www.facebook.com/ColombinaOficial/" target="_blank" class="icon">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+            </div>
+            
         </div>
-        <div class="footer-section">
-            <h3>Contacto</h3>
-            <p>Correo: info@colombina.com</p>
-            <p>Dirección: Calle 123, Colombia</p>
-            <p>© 2025 Colombina. Todos los derechos reservados.</p>
+    
+    <!-- Sección central: Empresas asociadas -->
+        <div class="footer-center">
+            <h4>Encuentra todos nuestros productos en:</h4>
+            <div class="brands-container">
+                <div class="brand"><img src="imagenes/Logo exito.png" alt="Exito"></div>
+                <div class="brand"><img src="imagenes/logo Jumbo.png" alt="Jumbo"></div>
+                <div class="brand"><img src="imagenes/logo market colombina.png" alt="Market Colombina"></div>
+                <div class="brand"><img src="imagenes/logo carulla.png" alt="Carulla"></div>
+                <div class="brand"><img src="imagenes/logo merqueo.png" alt="Merqueo"></div>
+                <div class="brand"><img src="imagenes/logo rappi.png" alt="Rappi"></div>
+            </div>
         </div>
-        <div class="footer-section">
-            <h3>Redes Sociales</h3>
-            <p>Facebook | Instagram | Twitter</p>
-        </div>
-        <div class="footer-section">
-            <h3>Empresas Aliadas</h3>
-            <p>Aliado 1 | Aliado 2</p>
+
+    <!-- Mapa -->
+        <div class="map-container">
+            <h4>📍Nuestra Ubicación</h4>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d53528.24342276858!2d-76.06841633148368!3d4.314726053739298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e384a6336944b6b%3A0xa8be72db46322459!2sFabrica%20De%20Dulces%20Colombina!5e0!3m2!1ses!2sco!4v1742391170832!5m2!1ses!2sco" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </footer>
+
+        <div class="copyright">
+            <p>&copy; 2025 Colombina S.A. Todos los derechos reservados.</p>
+        </div> 
+
+
+
+    <!-- Leaflet CSS y JS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-sA+eY5O5Upa4pAqfCHkUaKjvqTA40cvk/WHu4z9M0Mw="
+        crossorigin=""
+    />
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-oK3VHrs7GpefXtQGKH7Qc5ZECQOEWItY9po/Tl8DGMY="
+        crossorigin=""
+    ></script>
+    
+    <script>
+        // Inicializa el mapa con Leaflet
+        const map = L.map("mapa-footer").setView([7.1153, -73.1207], 15);
+    
+        // Carga el mapa de OpenStreetMap
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors",
+        }).addTo(map);
+    
+        // Añadir marcador en la ubicación de Colombina S.A.
+        L.marker([7.1153, -73.1207])
+            .addTo(map)
+            .bindPopup("<strong>Colombina S.A.</strong><br>Parque Industrial de Bucaramanga")
+            .openPopup();
+    </script>
+
+    
     
     <script>
         function generarCaptcha() {
