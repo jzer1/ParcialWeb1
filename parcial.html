@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colombina</title>
     <link rel="stylesheet" href="Styles.css"> <!-- Archivo CSS principal -->
-    <link rel="stylesheet" href="carousel.css"> <!-- Archivo CSS para el carrusel -->
     <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -213,20 +212,6 @@
         </div>
     </section>
 
-    <!-- Productos -->
-    <section id="productos">
-        <h2>Productos</h2>
-        <input type="text" placeholder="Ingresa el nombre del producto" id="search-bar">
-        <button>🔍</button>
-        <div class="product-categories">
-            <button data-category="chocolateria">Chocolatería</button>
-            <button data-category="dulces">Dulces</button>
-            <button data-category="galletas">Galletas</button>
-            <button data-category="helados">Helados</button>
-            <button data-category="snacks">Snacks</button>
-        </div>
-        <div id="product-list"></div>
-    </section>
     <!--lista de productos-->
     <div class="contenedor-slider">
         <button class="boton-flecha izquierda" onclick="moverSlider(-1)">&#10094;</button>
@@ -372,10 +357,8 @@
                 <div class="captcha" id="codigo-seguridad">FBT004</div>
                 <input type="text" placeholder="Ingresa el código">
             </div>               
-           
-            <button type="submit">ENVIAR</button>
+            <button class="botonfor" type="submit">ENVIAR</button>
         </form>
-       
         
     </div>
 </section>
