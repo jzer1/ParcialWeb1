@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dulces Interactivos</title>
+    <style>
+        body {
+            background: #eee;
+            font-family: "Tahoma";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        #scene {
+            display: flex;
+            width: 1000px;
+            height: 500px;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            overflow: hidden;
+        }
+        #left-zone {
+            width: 300px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            padding-left: 20px;
+        }
+        .list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .item input[type="radio"] {
+            display: none;
+        }
+        .item label {
+            display: block;
+            opacity: 0.5;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .item input[type="radio"]:checked + label {
+            opacity: 1;
+            font-weight: bold;
+            border-right: solid 4px;
+        }
+        .content {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .item input[type="radio"]:checked ~ .content {
+            display: block;
+        }
+        #toggle-button {
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #toggle-button:hover {
+            background-color: #0056b3;
+        }
+        #scene.hidden {
+            display: none;
+        }
+        #right-zone {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+        }
+        .circle-container {
+            display: flex;
+            gap: 15px;
+        }
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid green;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: white;
+        }
+        .circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .circle-section {
+            display: none;
+        }
+        .circle-section.active {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <button id="toggle-button">Mostrar/Ocultar</button>
+    <div id="scene">
+        <div id="left-zone">
+            <ul class="list">
+                <li class="item">
+                    <input type="radio" id="chocolate" name="carousel" checked>
+                    <label for="chocolate">Chocolate</label>
+                </li>
+                <li class="item">
+                    <input type="radio" id="gomitas" name="carousel">
+                    <label for="gomitas">Gomitas</label>
+                </li>
+                <li class="item">
+                    <input type="radio" id="helados" name="carousel">
+                    <label for="helados">Helados</label>
+                </li>
+                <li class="item">
+                    <input type="radio" id="galletas" name="carousel">
+                    <label for="galletas">Galletas</label>
+                </li>
+            </ul>
+        </div>
+        <div id="right-zone">
+            <div id="chocolate-images" class="circle-section active">
+                <div class="circle-container">
+                    <div class="circle"><img src="chocolate1.jpg" alt="Chocolate 1"></div>
+                    <div class="circle"><img src="chocolate2.jpg" alt="Chocolate 2"></div>
+                    <div class="circle"><img src="chocolate3.jpg" alt="Chocolate 3"></div>
+                </div>
+                <div class="circle-container">
+                    <div class="circle"><img src="chocolate4.jpg" alt="Chocolate 4"></div>
+                    <div class="circle"><img src="chocolate5.jpg" alt="Chocolate 5"></div>
+                    <div class="circle"><img src="chocolate6.jpg" alt="Chocolate 6"></div>
+                </div>
+            </div>
+            <div id="gomitas-images" class="circle-section">
+                <div class="circle-container">
+                    <div class="circle"><img src="gomitas1.jpg" alt="Gomita 1"></div>
+                    <div class="circle"><img src="gomitas2.jpg" alt="Gomita 2"></div>
+                    <div class="circle"><img src="gomitas3.jpg" alt="Gomita 3"></div>
+                </div>
+                <div class="circle-container">
+                    <div class="circle"><img src="gomitas4.jpg" alt="Gomita 4"></div>
+                    <div class="circle"><img src="gomitas5.jpg" alt="Gomita 5"></div>
+                    <div class="circle"><img src="gomitas6.jpg" alt="Gomita 6"></div>
+                </div>
+            </div>
+            <div id="helados-images" class="circle-section">
+                <div class="circle-container">
+                    <div class="circle"><img src="helado1.jpg" alt="Helado 1"></div>
+                    <div class="circle"><img src="helado2.jpg" alt="Helado 2"></div>
+                    <div class="circle"><img src="helado3.jpg" alt="Helado 3"></div>
+                </div>
+                <div class="circle-container">
+                    <div class="circle"><img src="helado4.jpg" alt="Helado 4"></div>
+                    <div class="circle"><img src="helado5.jpg" alt="Helado 5"></div>
+                    <div class="circle"><img src="helado6.jpg" alt="Helado 6"></div>
+                </div>
+            </div>
+            <div id="galletas-images" class="circle-section">
+                <div class="circle-container">
+                    <div class="circle"><img src="galleta1.jpg" alt="Galleta 1"></div>
+                    <div class="circle"><img src="galleta2.jpg" alt="Galleta 2"></div>
+                    <div class="circle"><img src="galleta3.jpg" alt="Galleta 3"></div>
+                </div>
+                <div class="circle-container">
+                    <div class="circle"><img src="galleta4.jpg" alt="Galleta 4"></div>
+                    <div class="circle"><img src="galleta5.jpg" alt="Galleta 5"></div>
+                    <div class="circle"><img src="galleta6.jpg" alt="Galleta 6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("toggle-button").addEventListener("click", function() {
+            document.getElementById("scene").classList.toggle("hidden");
+        });
+
+        document.querySelectorAll('.item input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.circle-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                let selectedCategory = this.id + "-images";
+                document.getElementById(selectedCategory).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
