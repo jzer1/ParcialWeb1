@@ -3,10 +3,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
 }
 body {
     font-family: Arial, sans-serif;
-    padding-top: 200px;
+    padding-top: 0; /* Elimina el espacio extra */
     background-color: black;
     background: url('imagenes/fondo.jpg') no-repeat center center fixed;
     background-size: cover;
@@ -17,9 +18,14 @@ html {
     scroll-behavior: smooth;
 }
 
+
 /* Encabezado */
 header {
-    background: linear-gradient(to right, #376793 20%, #285ca3 100%);
+    position: sticky; /* Fija el navbar en la parte superior */
+    top: 0px; /* Mantiene el navbar en la parte superior */
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to right, #052b85 20%, #1a4d6c 100%);
     font-family: "Bangers", system-ui;
     font-size: 20px;
     color: rgb(198, 71, 71);
@@ -27,16 +33,13 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: absolute;
-    width: 100%;
-    top: -0px;
-    left: 0;
-    z-index: 1000;
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
 }
+
 
 /* Imagen del logo más grande */
 header img {
-    height: 100px;
+    height: 90px;
     width: auto;
 }
 
@@ -63,7 +66,7 @@ nav a {
 }
 
 nav a:hover {
-    background-color: rgba(190, 30, 30, 0.897);
+    background-color: rgba(211, 13, 36, 0.897);
 }
 
 /* Dropdown con flecha y centrado debajo */
@@ -75,6 +78,8 @@ nav a:hover {
     content: ' ▼';
     font-size: 16px;
 }
+
+
 
 .dropdown-menu {
     display: none;
@@ -104,40 +109,110 @@ nav a:hover {
     color: black;
     text-decoration: none;
 }
+/*---------------------*/
 
-/* Carrito de compras más grande */
-.modal {
+/* Estilos para el cajón del carrito */
+/* Estilos para el cajón del carrito */
+#cart-drawer {
+    position: fixed;
+    bottom: 200px;  /* Posición inicial debajo del navbar */
+    right: -400px; /* Oculto por defecto */
+    width: 400px;
+    height: calc(100vh - 80px); /* Ajustar la altura */
+    background-color: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1); /* Sombra a la izquierda */
+    transition: right 0.3s ease-in-out;
+    z-index: 1000; /* Menor que el navbar */
     display: flex;
     flex-direction: column;
+}
+
+#cart-drawer.active {
+    right: 0; /* Mostrar el carrito */
+}
+
+/* Media queries para dispositivos móviles */
+@media (max-width: 768px) {
+    #cart-drawer {
+        width: 100%; /* El carrito ocupa todo el ancho en móviles */
+        right: -100%; /* Oculto por defecto */
+    }
+
+    #cart-drawer.active {
+        right: 0; /* Mostrar el carrito */
+    }
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 50px;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    width: 400px;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
 }
 
-.modal.active {
-    opacity: 1;
-    visibility: visible;
+.cart-header h2 {
+    margin: 0;
+    font-size: 24px;
 }
 
-.close {
-    align-self: flex-end;
+#close-cart {
+    background: none;
+    border: none;
+    font-size: 24px;
     cursor: pointer;
 }
 
+#cart-items {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto; /* Scroll vertical si es necesario */
+    overflow-x: hidden; /* Evita el scroll horizontal */
+}
+
+#cart-items div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#cart-items button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#cart-items button:hover {
+    background-color: #cc0000;
+}
+
+.cart-summary {
+    padding: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.cart-summary p {
+    margin: 10px 0;
+}
+/**/
+#cart-count {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    margin-left: 5px;
+}
 /*------------------------------------*/
 /* contenedor del carrusel */
-
-
+.sliderC{
+    padding-top: 60px;
+}
+   
 .indicadores {
     display: flex;
     justify-content: center;
@@ -145,6 +220,7 @@ nav a:hover {
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
+ 
 }
 
 .indicador {
@@ -154,6 +230,7 @@ nav a:hover {
     background-color: gray;
     border-radius: 50%;
     transition: background-color 0.3s;
+
 }
 
 .indicador.activo {
@@ -174,20 +251,35 @@ nav a:hover {
     padding: 10px;
     background: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+    max-width: 665px;
+    text-align: center;
 }
-
+.info-column h1 {
+    color: #0033a0;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+.info-column p {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
 .news-section {
     max-height: 350px;
     overflow-y: auto;
     padding: 10px;
 }
 
+
 .news-box {
     display: flex;
     align-items: center;
     background: white;
     border-radius: 15px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
     padding: 15px;
     margin-bottom: 10px;
     transition: transform 0.3s ease-in-out;
@@ -220,6 +312,7 @@ nav a:hover {
     font-size: 16px;
     color: #0033a0;
     margin: 0;
+    margin-bottom: 3px;
 }
 
 .news-content p {
@@ -233,35 +326,7 @@ nav a:hover {
     text-decoration: none;
     font-weight: bold;
 }
-/* Productos */
-#productos {
-    padding: 20px;
-    text-align: center;
-}
 
-.product-categories {
-    margin: 20px 0;
-}
-
-#product-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-}
-
-.product-card {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    width: 200px;
-}
-
-.product-card img {
-    width: 100%;
-    height: auto;
-}
 /*lista de productos*/
 
 .contenedor-slider {
@@ -341,7 +406,7 @@ nav a:hover {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.6);
+
     color: white;
     border: none;
     font-size: 20px;
@@ -372,6 +437,18 @@ form {
     align-items: center;
     gap: 10px;
 }
+
+
+.fromulario-conte{
+    background-image: url("imagenes/fondo\ formulario.jpg");
+    padding: 10px;
+    border-radius: 15px;
+    background-size: cover; /* Ajusta la imagen al tamaño del contenedor */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; 
+
+}
+
 
 form input, form select, form textarea {
     width: 80%;
@@ -528,4 +605,296 @@ footer {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+#contacto {
+    background: #fff;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+    border-radius: 30px;   
+    width: 100%;
+    padding: 20px;
+    margin-left: 0px; /* Ajusta este valor según sea necesario */
+    margin-bottom: 50px; /* Separa el formulario del footer */
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+h2 img {
+    width: 32px;
+    height: 32px;
+}
+
+
+p {
+    color: #555;
+    font-size: 14px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea los elementos del formulario a la izquierda */
+    width: 100%; /* Ocupa todo el ancho disponible */
+}
+
+.labe-for {
+    font-weight: bold;
+    margin-top: 0;
+    font-size: 14px;
+    text-align: left; /* Asegura que las etiquetas estén alineadas a la izquierda */
+margin-right: 10px;
+}
+
+.departamento{
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: left; /* Alinea el texto dentro de los inputs a la izquierda */
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: left; /* Alinea el texto dentro de los inputs a la izquierda */
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+textarea {
+    resize: none;
+    height: 80px;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+    width: 100%; /* Ocupa todo el ancho disponible */
+}
+
+/* Ajuste del contenedor del formulario */
+#contacto {
+    background: #fff;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+    border-radius: 30px;
+    width: 500px;
+    padding: 20px;
+    margin-left: 10px; /* Desplaza el formulario hacia la derecha */
+    margin-bottom: 50px; /* Separa el formulario del footer */
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+
+/* Mantengo los ajustes de separación del captcha */
+.captcha-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px; /* Separa más el captcha del cuadro de mensaje */
+    width: 100%; /* Ocupa todo el ancho disponible */
+}
+
+/* Ajuste del captcha */
+.captcha {
+    font-size: 24px;
+    font-weight: bold;
+    background: #eee;
+    padding: 10px 15px;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    user-select: none;
+    color: #333;
+    font-family: 'Courier New', Courier, monospace;
+    transform: skew(-5deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 120px;
+    height: 50px;
+    overflow: hidden;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Líneas dentro del captcha */
+.captcha::before,
+.captcha::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 2px;
+    background: rgba(0, 0, 0, 0.2);
+    transform: rotate(-10deg);
+    left: 0;
+    z-index: 1;
+}
+
+.captcha::after {
+    transform: rotate(15deg);
+}
+
+/* Ajuste del input del código */
+.captcha-container input {
+    flex-grow: 1;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+    width: 100%; /* Ocupa todo el ancho disponible */
+}
+
+/* Efecto al seleccionar el input */
+.captcha-container input:focus {
+    border-color: #27ae60;
+    outline: none;
+    box-shadow: 0 0 5px rgba(39, 174, 96, 0.5);
+}
+
+form input, form select, form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;}
+
+
+.botonFor {
+    background: #004080;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+button:hover {
+    background: #004080;
+}
+
+
+/*footer*/
+footer {
+    background: linear-gradient(to right, #052b85 20%, #1a4d6c 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    max-width: 100%;
+    margin: auto;
+}
+
+/* Sección izquierda: Logo e información de Colombina */
+.footer-left {
+    flex: 1;
+    text-align: left;
+    
+}
+.footer-left img {
+    width: 200px;
+}
+.footer-left p {
+    margin: 5px 0;
+    color: white;
+}
+
+.socials-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* Espaciado entre íconos */
+}
+
+.socials-container a {
+    font-size: 30px;
+    color: white;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out, color 0.2s ease;
+    display: inline-block; /* Asegura que la transformación funcione */
+}
+
+/* Efecto de escala y cambio de color */
+.socials-container a:hover {
+    transform: scale(1.3) rotate(10deg); /* Gira ligeramente además de agrandar */
+    color: #cf313b; /* Color llamativo al pasar el mouse */
+}
+
+/* Sección central de empresas asociadas */
+.footer-center {
+    flex: 2.5;
+    text-align: center;
+}
+.footer-center h4 {
+    margin-bottom: 30px;
+    font-size: 30px;
+    font-weight: bold;
+}
+.brands-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.brand {
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    filter: brightness(0.7);
+}
+.brand img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.brand:hover {
+    transform: scale(1.6);
+    filter: brightness(1.2);
+    z-index: 30;
+    margin: 0 5px;
+}
+
+/* Ajusta el iframe para ser totalmente interactivo */
+.map-container iframe {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    border-radius: 8px;
+    border: 2px solid #fff;
+    pointer-events: auto; /* Asegura la interacción */
+    overflow: hidden; /* Previene desbordamientos */
+    cursor: grab; /* Da la sensación de arrastrar */
+}
+
+/* Cambia el cursor mientras arrastras */
+.map-container iframe:active {
+    cursor: grabbing;
+}
+
+/* Copyright abajo centrado */
+.copyright {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+    color: #fff;
 }
